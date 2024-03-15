@@ -1,0 +1,152 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vision-microservice-sam
+  namespace: vision
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vision-microservice-sam
+  template:
+    metadata:
+      labels:
+        app: vision-microservice-sam
+    spec:
+      containers:
+      - name: vision-microservice-sam
+        image: lizhouyu/vision_microservice_sam
+        ports:
+        - containerPort: 5000
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vision-microservice-yolov8
+  namespace: vision
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vision-microservice-yolov8
+  template:
+    metadata:
+      labels:
+        app: vision-microservice-yolov8
+    spec:
+      containers:
+      - name: vision-microservice-yolov8
+        image: lizhouyu/vision_microservice_yolov8
+        ports:
+        - containerPort: 5000
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vision-microservice-hog
+  namespace: vision
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vision-microservice-hog
+  template:
+    metadata:
+      labels:
+        app: vision-microservice-hog
+    spec:
+      containers:
+      - name: vision-microservice-hog
+        image: lizhouyu/vision_microservice_hog
+        ports:
+        - containerPort: 5000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: vision-microservice-sam
+  namespace: vision
+spec:
+  selector:
+    app: vision-microservice-sam
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: vision-microservice-yolov8
+  namespace: vision
+spec:
+  selector:
+    app: vision-microservice-yolov8
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: vision-microservice-hog
+  namespace: vision
+spec:
+  selector:
+    app: vision-microservice-hog
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vision-microservice-ingress
+  namespace: vision
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/proxy-body-size: 50m
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "360s"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "360s"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "360s"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: eb2-2259-lin04.csc.ncsu.edu # replace with your own domain
+      http:
+        paths:
+          - path: /vision/model-sam(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: vision-microservice-sam
+                port:
+                  number: 5000
+          - path: /vision/model-yolov8(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: vision-microservice-yolov8
+                port:
+                  number: 5000
+          - path: /vision/model-hog(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: vision-microservice-hog
+                port:
+                  number: 5000

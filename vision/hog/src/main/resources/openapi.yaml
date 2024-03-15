@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+    title: Sample API for HOGS
+    description: the API for HOGS model
+    version: 0.0.1
+servers:
+    - url: http://eb2-2259-lin04.cscn.csu.edu/vision/model-hog-people
+      description: Main (production) server
+    - url: model-hog-people
+      description: Service name in the K8S cluster
+paths:
+    /:
+        post:
+            summary: Returns the detected image
+            description: receives an image and returns the detected result
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                image:
+                                    type: string
+                                    format: binary
+            responses:
+                200:
+                    description: an image in PNG format with people surrounded by bounding boxes
+                    content:
+                        image/png:
+                            schema:
+                                type: string
+                                format: binary
+                400:
+                    description: invalid client input
+                500:
+                    description: internal server error
+
