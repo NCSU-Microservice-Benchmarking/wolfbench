@@ -1,0 +1,15 @@
+
+@font-face {
+  font-family: 'Abrade';
+  src: url('./media/fonts/Abrade-SemiLight.ttf') format('truetype'),
+      url('./media/fonts/Abrade-SemiLight.woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Univers';
+  src: url('./media/fonts/UniversLTStd.otf');
+  font-weight: normal;
+  font-style: normal;
+}

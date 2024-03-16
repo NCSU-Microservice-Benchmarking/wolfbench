@@ -1,8 +1,7 @@
 import requests
 import json
 if __name__ == "__main__":
-    # host = "http://eb2-2259-lin04.csc.ncsu.edu/vision/model-hog"
-    host = "http://eb2-2259-lin04.csc.ncsu.edu/vision/model-sam"
+    host = "http://127.0.0.1:5000"
     # send a get request to the greet endpoint
     response = requests.get(host+"/greet")
     # print the response text

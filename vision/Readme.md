@@ -18,3 +18,10 @@ A computer vision service website that hosts models including:
     ```
     kubectl create -f vision.yaml
     ```
+
+## Usage
+1. Access the website with the domain name of your website and port 30000.
+2. Use the API to interact with the models.
+- YOLOv8 object detection: `<your_host_address>/vision/model-yolov8/detections`
+- HOG people detection: `<your_host_address>/vision/model-hog-people/`
+- Segment Anything Model: `<your_host_address>/vision/model-sam/`

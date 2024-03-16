@@ -1,14 +1,12 @@
 from ultralytics import SAM
+from flask import Flask, request, Response
 import torch
-import time
 import cv2
 import numpy as np
-from flask import request
-from flask import Flask
-from flask import Response
-from flask_cors import CORS, cross_origin
-import os
 import requests
+from flask_cors import CORS, cross_origin
+
+
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -32,7 +30,7 @@ def countGPU():
         return str(torch.cuda.device_count())
 
 @app.route('/',methods=['POST'])
-def detect():
+def segment():
     # get image from the request form
     image = request.files.get('image')
     image = image.read()
@@ -49,4 +47,4 @@ def detect():
     return Response(image, mimetype='image/png')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.', port=5000)
+    app.run(host='0.0.0.0', port=5000)

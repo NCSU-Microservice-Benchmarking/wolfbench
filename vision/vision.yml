@@ -4,7 +4,7 @@ metadata:
   name: vision-microservice-sam
   namespace: vision
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: vision-microservice-sam
@@ -18,6 +18,9 @@ spec:
         image: lizhouyu/vision_microservice_sam
         ports:
         - containerPort: 5000
+        resources:
+          limits:
+            nvidia.com/gpu: 0
 
 ---
 
@@ -67,6 +70,29 @@ spec:
 
 ---
 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vision-microservice-frontend
+  namespace: vision
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vision-microservice-frontend
+  template:
+    metadata:
+      labels:
+        app: vision-microservice-frontend
+    spec:
+      containers:
+      - name: vision-microservice-frontend
+        image: lizhouyu/vision_microservice_frontend
+        ports:
+        - containerPort: 80
+
+---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -112,6 +138,23 @@ spec:
 
 ---
 
+apiVersion: v1
+kind: Service
+metadata:
+  name: vision-microservice-frontend
+  namespace: vision
+spec:
+  type: NodePort
+  selector:
+    app: vision-microservice-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30000
+
+---
+
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -123,6 +166,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "360s"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "360s"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "360s"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
 spec:
   ingressClassName: nginx
   rules:
@@ -143,10 +187,14 @@ spec:
                 name: vision-microservice-yolov8
                 port:
                   number: 5000
-          - path: /vision/model-hog(/|$)(.*)
+          - path: /vision/model-hog-people(/|$)(.*)
             pathType: Prefix
             backend:
               service:
                 name: vision-microservice-hog
                 port:
                   number: 5000
+
+
+                  
+

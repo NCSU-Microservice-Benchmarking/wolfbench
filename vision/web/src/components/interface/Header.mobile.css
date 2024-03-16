@@ -1,0 +1,164 @@
+.header-bar-mobile {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: fixed;
+  z-index: 100;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: black;
+  height: 70px;
+  opacity: 1;
+}
+
+.logo-mobile { 
+  border: none;
+  display: flex;
+  height: 100%;
+  border-radius: 50%;
+  position: absolute;
+  align-items: center;
+  left: 15px;
+  z-index: inherit;
+}
+
+.logo-mobile h1 { 
+  border: none;
+  display: flex;
+  height: 100%;
+  border-radius: 50%;
+  position: absolute;
+  align-items: center;
+  left: 15px;
+  z-index: inherit;
+}
+
+.logo-mobile:hover{
+  cursor: pointer;
+}
+
+.nav-dropbtn-mobile {
+  position: absolute;
+  display: block;
+  width: 3.5vh; 
+  height: 3.5vh;
+  background-repeat: no-repeat;
+  background-size: 3.5vh 3.5vh;
+  right: 15px;
+  outline: none !important;
+  box-shadow: none !important;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  z-index: inherit;
+}
+
+.menu-closed {
+  background-image: url('../../media/images/dropdownthin2.png');
+}
+
+.menu-open {
+  background-image: url('../../media/images/closethin.png');
+}
+
+
+
+#nav-menu-mobile {
+  position: fixed;
+  z-index: 10;
+  background: rgb(69, 69, 69);;
+  height: fit-content;
+  width: 100%;
+  top: 70px;
+  min-height: 200px;
+}
+
+.menu-options-mobile{
+  text-align: center;
+  width: 100%;
+}
+
+.menu-options-mobile li{
+  width: 100%;
+  margin: 0;
+  text-align: center;
+}
+
+.navlink-mobile {
+  color: white;
+  display: flex;
+  background-color: inherit; 
+  outline: none;
+  position: relative;
+  text-align: center;
+  margin: 0 0 10px 0;
+  padding: 4px;
+  text-decoration: none;
+  font-family: 'Univers';
+  font-size: calc(16px + 0.5vw); 
+  transition: all 0.2s ease-in-out;
+}
+
+.navlink-mobile::before {
+  content: ">";
+  margin-right: 10px;
+}
+
+.navlink-mobile::after {
+  content: "";
+}
+
+.navlink-mobile:hover {
+  color: red;
+}
+
+.navlink-mobile.active {
+  color: red;
+}
+
+
+  
+  
+  
+  
+/*EFFECTS*/  
+  
+.slide-in-menu {
+  position: relative;
+  -webkit-animation-name: slideinmenu;
+  -webkit-animation-duration: 0.4s;
+  animation-name: slideinmenu;
+  animation-duration: 0.4s;
+  animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes slideinmenu {
+  from { top:-200px; background-color:  rgb(69, 69, 69) } 
+  to { top: 70px; background-color: rgb(13, 13, 13)}
+}
+
+@keyframes slideinmenu { 
+  from{ top:-200px; background-color:  rgb(69, 69, 69) } 
+  to{ top: 70px; background-color: rgb(13, 13, 13) }
+}
+
+.slide-out-menu {
+  position: relative;
+  -webkit-animation-name: slideoutmenu;
+  -webkit-animation-duration: 0.4s;
+  animation-name: slideoutmenu;
+  animation-duration: 0.4s;
+  animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes slideoutmenu {
+  from { top:70px; background-color: rgb(13, 13, 13) } 
+  to { top:-200px; opacity:0; background-color: rgb(69, 69, 69); }
+}
+
+@keyframes slideoutmenu { 
+  from{ top:70px; background-color: rgb(13, 13, 13)} 
+  to{ top:-200px; background-color: rgb(69, 69, 69) }
+}

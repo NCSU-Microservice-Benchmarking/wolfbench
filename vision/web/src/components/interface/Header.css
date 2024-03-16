@@ -1,0 +1,130 @@
+#header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: absolute;
+  z-index: 10;
+  align-items: center;
+  width: 100%;
+  height: 70px;
+  background-color: black;
+}
+
+.banner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  border: 1px;
+  padding-left: calc(10px + 1vw);
+  cursor: pointer;
+}
+
+.banner-text h1 {
+  color: white;
+  font-weight: lighter;
+  font-family: 'Univers';
+  margin: 0 0 0 10px;
+  font-size: calc(15px + 0.4vw);
+}
+
+
+
+
+
+
+
+.navbar {
+  position: relative;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  margin: auto 25px auto auto;
+  padding-right: calc(10px + 1vw);
+}
+
+.menuoptions {
+  border: none;
+  padding: 0px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-items: space-between;
+}
+
+.navlink {
+  background-color: inherit; 
+  outline: none;
+  position: relative;
+  text-align: center;
+  align-items: center;
+  vertical-align: middle;
+  margin: auto 10px auto auto;
+  padding: 5px;
+  text-decoration: none;
+  font-family: 'Univers';
+  font-size: calc(15px + 0.1vw);
+  color: white;
+  outline: none !important; box-shadow: none !important;
+}
+
+.navlink::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #CC0000;
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: all 0.3s ease-in-out 0s;
+  cursor: pointer;
+}
+.navlink:hover::before {
+  visibility: visible;
+  transform: scaleX(1);
+}
+.navlink:hover {
+  cursor: pointer;
+}
+.navlink.active {
+  color:  #CC0000;
+}
+
+
+
+/*Effects*/
+.show-header {
+  -webkit-animation-name: showheader;
+  -webkit-animation-duration: 0.5s;
+  animation-name: showheader;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+@-webkit-keyframes showheader {
+  from {top:-300px; opacity:0; background-color: gray;} 
+  to {top:0; opacity:1; background-color: black;}
+}
+@keyframes showheader {
+  from {top:-300px; opacity:0; background-color: gray; border: 1px solid black;} 
+  to {top:0; opacity:1; background-color: black; border: none;}
+}
+
+.hide-header {
+  -webkit-animation-name: hideheader;
+  -webkit-animation-duration: 0.7s;
+  animation-name: hideheader;
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
+}
+@-webkit-keyframes hideheader {
+  from {top:0; opacity:1; background-color: black; border: none}
+  to {top:-300px; opacity:0; background-color: gray; border: 1px solid black;} 
+}
+@keyframes hideheader {
+  from {top:0; opacity:1; background-color: black; border: none}
+  to {top:-300px; opacity:0; background-color: gray; border: 1px solid black;} 
+}
+

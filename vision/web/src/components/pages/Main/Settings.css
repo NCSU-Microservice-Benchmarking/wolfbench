@@ -1,0 +1,133 @@
+.settings-container {
+  width: 35vw;
+  border: 1px solid rgb(220, 220, 220);
+  padding: 15px;
+}
+
+.settings-container h2 {
+  margin: 0 0 10px 0;
+  font-family: 'Univers';
+  color: #CC0000;
+  font-size: calc(15px + 0.3vw);
+}
+
+.setting-header {
+  border: 1px solid rgb(220, 220, 220);
+  color: black;
+  padding: calc(5px + 0.3vw) 10px;
+  display: flex;
+  background: whitesmoke;
+  display: flex;
+  flex-direction: row;
+}
+.setting-header h1 {
+  color: black;
+  font-family: 'Univers';
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  font-size: calc(13px + 0.3vw);
+}
+
+
+.task-options, .model-options {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.task-options-item, .model-options-item {
+  box-shadow: 5px 5px 15px 2px rgb(202, 202, 202);
+  padding: 10px 20px;
+  border: 1px solid rgb(186, 186, 186);
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: fit-content;
+}
+
+.model-option-item-img {
+  height: calc(15px + 0.5vw);
+  margin-right: 7px;
+}
+
+.task-options-item h1, .model-options-item h1 {
+  font-family: 'Abrade';
+  font-weight: bold;
+  font-size: calc(13px + 0.2vw);
+  margin: 0;
+}
+
+.task-options-item:hover, .model-options-item:hover {
+  background-color: whitesmoke;
+}
+
+.slider-options {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.slidecontainer {
+  width: 100%; /* Width of the outside container */
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid whitesmoke;
+}
+
+/* The slider itself */
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 80%; /* Full-width */
+  height: 10px; /* Specified height */
+  background: rgb(255, 255, 255); /* Grey background */
+  border: 1px solid black;
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+  border-radius: 10px;
+  margin: 20px auto; 
+  overflow: hidden;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 20px; /* Set a specific slider handle width */
+  height: 20px; /* Slider handle height */
+  border: 2px solid black; /* Green background */
+  cursor: pointer;
+  border-radius: 50%; /* Cursor on hover */
+  box-shadow: -407px 0 0 400px black;
+  z-index: 5;
+}
+
+.slider::-moz-range-thumb {
+  width: 20px; /* Set a specific slider handle width */
+  height: 20px; /* Slider handle height */
+  background: black; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+  box-shadow: -407px 0 0 400px black;
+}
+
+@media screen and (max-width: 1100px) {
+  .settings-container {width: 80%;}
+}

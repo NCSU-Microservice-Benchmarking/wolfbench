@@ -1,4 +1,4 @@
-FROM bitnami/pytorch:latest
+FROM nvidia/cuda:12.3.2-runtime-ubuntu22.04
 
 LABEL maintainer="Zhouyu Li"
 LABEL email="zli85@ncsu.edu"
@@ -12,6 +12,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update
 RUN apt install -y ffmpeg libsm6 libxext6
+RUN apt install -y python3 python3-pip
 
 COPY . /usr/src/pyserver
 
@@ -24,4 +25,3 @@ RUN export FLASK_APP=app.py
 EXPOSE 5000
 
 CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app", "--timeout", "120"]
-# CMD gunicorn -w 4 -b 0.0.0.0:5000 app:app

@@ -21,7 +21,7 @@ public class HOGController {
     @Autowired
     private HogService myHogService;
 
-    @RequestMapping("/hello")
+    @RequestMapping("/greet")
     public String hello() {
         return "Hello World";
     }
@@ -31,7 +31,7 @@ public class HOGController {
         return "healthy";
     }
 
-    @PostMapping("/model-hog-people")
+    @PostMapping("/")
     @Operation(summary = "Returns the detected image",
             description = "Receives an image and returns the detected result")
     public ResponseEntity HogMethod(@RequestParam("image") MultipartFile files) {
