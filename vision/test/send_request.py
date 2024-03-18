@@ -11,6 +11,7 @@ if __name__ == "__main__":
     # put the image in a multipart/form-data
     files = {'image': image}
     # send a post request to the detect endpoint
+    # response = requests.post(host + '/detections', files=files)
     response = requests.post(host + '/', files=files)
     #response = requests.post(host+"/model-hog-people", "")
     # check the response status code

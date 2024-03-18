@@ -38,9 +38,8 @@ def segment():
     nparr = np.fromstring(image, np.uint8)
     image = cv2.imdecode(nparr, cv2.IMREAD_COLOR) # cv2.IMREAD_COLOR in OpenCV 3.1
     # Run inference
-    results = model(image)
-    for r in results:
-        image = r.plot()  # plot a BGR numpy array of predictions
+    results = model(image)[0]
+    image = results.plot(boxes=False, labels=False, probs=False, conf=True)  # plot a BGR numpy array of predictions
     # convert image to a binary string
     image = cv2.imencode('.png', image)[1].tostring()
     # send the image to the client as an png image encoded as a binary string

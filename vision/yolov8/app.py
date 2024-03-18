@@ -30,18 +30,19 @@ def detect():
     image = cv2.imdecode(np.frombuffer(image_file.read(), np.uint8), cv2.IMREAD_COLOR)
 
     # Process the image through YOLOv8
-    results = model(image)
+    results = model(image)[0]
     
     # Draw bounding boxes on the image
-    for result in results:
-        for box_cls_conf in result.boxes:
-            boxes = box_cls_conf.xyxy.cpu().numpy()
-            cls_list = box_cls_conf.cls.cpu().numpy()
-            conf_list = box_cls_conf.conf.cpu().numpy()
-            for i in range(len(boxes)):
-                x1, y1, x2, y2 = map(int, boxes[i][:4])
-                image = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                image = cv2.putText(image, str(conf_list[i]), (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+    # for result in results:
+    #     for box_cls_conf in result.boxes:
+    #         boxes = box_cls_conf.xyxy.cpu().numpy()
+    #         cls_list = box_cls_conf.cls.cpu().numpy()
+    #         conf_list = box_cls_conf.conf.cpu().numpy()
+    #         for i in range(len(boxes)):
+    #             x1, y1, x2, y2 = map(int, boxes[i][:4])
+    #             image = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 255, 0), 2)
+    #             image = cv2.putText(image, str(conf_list[i]), (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+    image = results.plot(boxes=True, labels=True, line_width=3, conf=True, probs=False)  # plot a BGR numpy array of predictions
 
     # Convert the image to a binary string
     image_data = cv2.imencode('.png', image)[1].tobytes()

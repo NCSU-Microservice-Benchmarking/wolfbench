@@ -20,7 +20,7 @@ spec:
         - containerPort: 5000
         resources:
           limits:
-            nvidia.com/gpu: 0
+            nvidia.com/gpu: 1
 
 ---
 
@@ -30,7 +30,7 @@ metadata:
   name: vision-microservice-yolov8
   namespace: vision
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: vision-microservice-yolov8
@@ -44,6 +44,9 @@ spec:
         image: lizhouyu/vision_microservice_yolov8
         ports:
         - containerPort: 5000
+        resources:
+          limits:
+            nvidia.com/gpu: 1
 
 ---
 
@@ -53,7 +56,7 @@ metadata:
   name: vision-microservice-hog
   namespace: vision
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: vision-microservice-hog
@@ -76,7 +79,7 @@ metadata:
   name: vision-microservice-frontend
   namespace: vision
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: vision-microservice-frontend

@@ -1,0 +1,97 @@
+# setup a cassandra instance with `make cassandra`
+apiVersion: jaegertracing.io/v1
+kind: Jaeger
+metadata:
+  name: jaeger-with-cassandra-and-kafka
+  namespace: observability
+spec:
+  strategy: streaming
+  collector:
+    maxReplicas: 5
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    options:
+      collector.queue-size: 10000
+      kafka: 
+        producer:
+          topic: jaeger-spans
+          brokers: ncsu-yulab-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+          batch-size: 128000
+          batch-linger: 1s
+          batch-max-messages: 100
+  ingester:
+    options:
+      kafka:
+        consumer:
+          topic: jaeger-spans
+          brokers: ncsu-yulab-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+  storage:
+    type: cassandra
+    options:
+      cassandra:
+        # Note: This assumes cassandra is running in the "default" namespace.
+        servers: cassandra.default.svc
+        keyspace: jaeger_v1_dc1
+    cassandraCreateSchema:
+      datacenter: "dc1"
+      mode: "prod"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger-with-cassandra-and-kafka-query-nodeport
+  namespace: observability
+  labels:
+    app: jaeger
+    app.kubernetes.io/component: query
+    app.kubernetes.io/instance: jaeger-with-cassandra-and-kafka
+    app.kubernetes.io/managed-by: jaeger-operator
+    app.kubernetes.io/name: jaeger-with-cassandra-and-kafka-query
+    app.kubernetes.io/part-of: jaeger
+spec:
+  type: NodePort
+  ports:
+    - port: 16686
+      targetPort: 16686
+      protocol: TCP
+      name: query
+      nodePort: 30686
+  selector:
+    app: jaeger
+    app.kubernetes.io/component: query
+    app.kubernetes.io/instance: jaeger-with-cassandra-and-kafka
+    app.kubernetes.io/managed-by: jaeger-operator
+    app.kubernetes.io/name: jaeger-with-cassandra-and-kafka-query
+    app.kubernetes.io/part-of: jaeger
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger-with-cassandra-and-kafka-collector-nodeport
+  namespace: observability
+  labels:
+    app: jaeger
+    app.kubernetes.io/component: collector
+    app.kubernetes.io/instance: jaeger-with-cassandra-and-kafka
+    app.kubernetes.io/managed-by: jaeger-operator
+    app.kubernetes.io/name: jaeger-with-cassandra-and-kafka-collector
+    app.kubernetes.io/part-of: jaeger
+spec:
+  type: NodePort
+  ports:
+    - port: 14268
+      targetPort: 14268
+      protocol: TCP
+      name: http
+      nodePort: 30468
+  selector:
+    app: jaeger
+    app.kubernetes.io/component: collector
+    app.kubernetes.io/instance: jaeger-with-cassandra-and-kafka
+    app.kubernetes.io/managed-by: jaeger-operator
+    app.kubernetes.io/name: jaeger-with-cassandra-and-kafka-collector
+    app.kubernetes.io/part-of: jaeger
