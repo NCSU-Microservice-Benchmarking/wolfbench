@@ -18,9 +18,11 @@ spec:
         image: lizhouyu/vision_microservice_sam
         ports:
         - containerPort: 5000
-        resources:
-          limits:
-            nvidia.com/gpu: 1
+        # resources:
+        #   limits:
+        #     nvidia.com/gpu: 1
+      nodeSelector:
+        name: lin04
 
 ---
 
@@ -44,9 +46,11 @@ spec:
         image: lizhouyu/vision_microservice_yolov8
         ports:
         - containerPort: 5000
-        resources:
-          limits:
-            nvidia.com/gpu: 1
+        # resources:
+        #   limits:
+        #     nvidia.com/gpu: 1
+      nodeSelector:
+        name: lin04
 
 ---
 

@@ -88,6 +88,11 @@ spec:
       protocol: TCP
       name: http
       nodePort: 30468
+    - port: 4318
+      targetPort: 4318
+      protocol: TCP
+      name: grpc
+      nodePort: 30318
   selector:
     app: jaeger
     app.kubernetes.io/component: collector
