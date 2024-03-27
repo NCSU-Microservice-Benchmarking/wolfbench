@@ -1,6 +1,8 @@
 import requests
 import json
 
+import os
+
 from opentelemetry.sdk.resources import SERVICE_NAME, Resource
 from opentelemetry import trace, propagators, baggage
 from opentelemetry.trace.propagation.tracecontext import TraceContextTextMapPropagator
@@ -9,7 +11,7 @@ from opentelemetry.baggage.propagation import W3CBaggagePropagator
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import ConsoleSpanExporter, BatchSpanProcessor
 
-jaeger_endpoint = "http://eb2-2259-lin04.csc.ncsu.edu:30318"
+jaeger_endpoint = os.getenv("JAEGER_ENDPOINT", "http://localhost:4318")
 
 # setup opentelemetry
 resource = Resource(
