@@ -3,6 +3,7 @@ import torch
 import cv2
 import numpy as np
 import requests
+import os
 from ultralytics import YOLO
 from flask_cors import CORS, cross_origin
 
@@ -35,7 +36,9 @@ resource = Resource(
 )
 
 # jaeger_endpoint = "http://jaeger-with-cassandra-and-kafka-collector.observability.svc.cluster.local:4317"
-jaeger_endpoint = "http://eb2-2259-lin04.csc.ncsu.edu:30318"
+# jaeger_endpoint = "http://eb2-2259-lin04.csc.ncsu.edu:30318"
+
+jaeger_endpoint = os.getenv("JAEGER_ENDPOINT", "http://localhost:4317")
 
 trace_provider = TracerProvider(resource=resource)
 processor = BatchSpanProcessor(OTLPSpanExporter(endpoint=jaeger_endpoint + "/v1/traces"))
