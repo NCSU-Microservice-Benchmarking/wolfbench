@@ -22,6 +22,10 @@ RUN pip install -r requirements.txt
 
 RUN export FLASK_APP=app.py
 
+ENV JAEGER_ENDPOINT http://jaeger-with-cassandra-and-kafka-collector.observability.svc.cluster.local:4318
+# Uncomment the following line if testing locally with a Jaeger container
+# ENV JAEGER_ENDPOINT http://host.docker.internal:4318
+
 EXPOSE 5000
 
 CMD ["gunicorn", "-w", "2", "-b", "0.0.0.0:5000", "app:app", "--timeout", "120"]
