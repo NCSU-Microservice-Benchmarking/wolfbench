@@ -3,6 +3,7 @@ import torch
 import cv2
 import numpy as np
 import requests
+import os
 from ultralytics import YOLO
 from flask_cors import CORS, cross_origin
 
@@ -35,7 +36,9 @@ resource = Resource(
 )
 
 # jaeger_endpoint = "http://jaeger-with-cassandra-and-kafka-collector.observability.svc.cluster.local:4317"
-jaeger_endpoint = "http://eb2-2259-lin04.csc.ncsu.edu:30318"
+# jaeger_endpoint = "http://eb2-2259-lin04.csc.ncsu.edu:30318"
+
+jaeger_endpoint = os.getenv("JAEGER_ENDPOINT", "http://localhost:4318")
 
 trace_provider = TracerProvider(resource=resource)
 processor = BatchSpanProcessor(OTLPSpanExporter(endpoint=jaeger_endpoint + "/v1/traces"))
@@ -74,7 +77,7 @@ def detect():
     baggage_dict ={'baggage': headers['Baggage']}
     baggage_context = W3CBaggagePropagator().extract(baggage_dict, context=context)
 
-    with tracer.start_span("vision_yolov8_model_process_request", context=baggage_context) as span:
+    with tracer.start_as_current_span("vision_yolov8_model_process_request", context=baggage_context) as span:
         process_request_context = baggage.set_baggage("context", "vision_yolov8_model_process_request")
         # set pre_processing context
         with tracer.start_span("vision_yolov8_model_pre_processing", context=process_request_context) as pre_processing_span:
