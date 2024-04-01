@@ -1,0 +1,12 @@
+venv/
+lib/
+lib64/
+README.md
+bin/
+include/
+.gitignore
+__pycache__/
+
+sam_results.png
+send_request.py
+test.py
