@@ -1,0 +1,8 @@
+venv/
+lib/
+lib64/
+README.md
+bin/
+include/
+.gitignore
+__pycache__/

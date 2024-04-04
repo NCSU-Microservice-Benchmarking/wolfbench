@@ -10,9 +10,9 @@ USER root
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update
-RUN apt install -y ffmpeg libsm6 libxext6
-RUN apt install -y python3 python3-pip
+RUN apt-get update \
+    && apt install -y ffmpeg libsm6 libxext6 \
+    && apt install -y python3 python3-pip
 
 COPY . /usr/src/pyserver
 
@@ -20,8 +20,7 @@ WORKDIR /usr/src/pyserver
 
 RUN pip install -r requirements.txt
 
-RUN export FLASK_APP=app.py
-
+ENV FLASK_APP app.py
 ENV JAEGER_ENDPOINT http://jaeger-with-cassandra-and-kafka-collector.observability.svc.cluster.local:4318
 # Uncomment the following line if testing locally with a Jaeger container
 # ENV JAEGER_ENDPOINT http://host.docker.internal:4318
