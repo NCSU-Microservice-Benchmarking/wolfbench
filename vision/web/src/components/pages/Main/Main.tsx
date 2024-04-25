@@ -43,6 +43,7 @@ const Main = (props: MainProps) => {
   }, []);
 
   const handleFileSelect = (event: any) => {
+    // Moment: Image is received by client via user upload. Trigged by onChange event
     const input = event.target.files;
   
     if (input[0]) {
