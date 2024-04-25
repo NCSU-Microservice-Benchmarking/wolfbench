@@ -18,7 +18,9 @@ const requestUtil = {
     let path: string = models[task].models.find((model_) => model_.name === model)?.path!;
     
     try {
+      // Moment: Image is encoded and sent to the service.
       const response = await axiosClient.post(path, formData);
+      // Moment: Client received response from service.
       console.log(response.data);
       setResults([response.data]);
       return;
