@@ -1,7 +1,7 @@
 import './Main.css';
 import Settings from './Settings';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch  } from 'react-redux';
 import { RootState } from '../../../redux/store';
 import { setOriginals, setCurrent, setResults } from '../../../redux/slices/images';
@@ -37,12 +37,20 @@ const Main = (props: MainProps) => {
   const { response } = useSelector((state: RootState) => state.general);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const imgRef = useRef<any>(null);
   
   useEffect(() => {
     MountDisplay(undefined, undefined);
   }, []);
 
+  useEffect(() => {
+    if (imgRef.current && imgRef.current.naturalWidth !== 0) {
+      // Moment: Image should be finished rendering, triggered by naturalWidth.
+    }
+  }, [imgRef.current && imgRef.current.naturalWidth]);
+
   const handleFileSelect = (event: any) => {
+    // Moment: Image is received by client via user upload. Trigged by onChange event
     const input = event.target.files;
   
     if (input[0]) {
@@ -98,6 +106,10 @@ const Main = (props: MainProps) => {
     dispatch(setResults(null));
   }
 
+  const handleImageLoad = () => {
+    // Moment: Result image loaded, not necessarily rendered. Triggered by onLoad.
+  }
+
   return ( 
     <div id="page-content">
       
@@ -120,7 +132,9 @@ const Main = (props: MainProps) => {
               </div> 
 
               <div className='results-display-current fade-in-quick'>
-                <img src={imageUtil.create.blob(resultsFiles[current], 'binary', true)} id="results-img" alt="Results"/>
+                <img src={imageUtil.create.blob(resultsFiles[current], 'binary', true)} id="results-img" alt="Results"
+                  onLoad={handleImageLoad} ref={imgRef}
+                />
               </div>
 
             </div>
