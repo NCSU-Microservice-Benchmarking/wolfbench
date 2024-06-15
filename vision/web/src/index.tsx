@@ -16,8 +16,14 @@ import {
 } from '@opentelemetry/semantic-conventions';
 import { WebTracerProvider } from '@opentelemetry/sdk-trace-web';
 import {BatchSpanProcessor} from '@opentelemetry/sdk-trace-base';
-// import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto';
-import {ZipkinExporter} from '@opentelemetry/exporter-zipkin';
+// import { ConsoleSpanExporter } from '@opentelemetry/sdk-trace-web';
+import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto';
+// import {ZipkinExporter} from '@opentelemetry/exporter-zipkin';
+import { CompositePropagator, W3CBaggagePropagator, W3CTraceContextPropagator } from '@opentelemetry/core';
+import { ZoneContextManager } from '@opentelemetry/context-zone';
+import { registerInstrumentations } from '@opentelemetry/instrumentation';
+import { FetchInstrumentation } from '@opentelemetry/instrumentation-fetch';
+import { XMLHttpRequestInstrumentation } from '@opentelemetry/instrumentation-xml-http-request';
 
 const resource = Resource.default().merge(
   new Resource({
@@ -30,19 +36,37 @@ const provider = new WebTracerProvider({
   resource: resource,
 });
 // const exporter = new ConsoleSpanExporter();
-// const exporter = new OTLPTraceExporter({
-//   url: 'http://155.138.202.64:4318/v1/traces',
-//   headers: {},
-// });
-const exporter = new ZipkinExporter({
-  url: 'http://155.138.202.64:9411/api/v2/spans',
-  serviceName: 'vision-web',
-  headers: {}, // this header is important for Zipkin to work, as it changes the content type from application/json to xhr (https://github.com/open-telemetry/opentelemetry-js/issues/3062)
+const exporter = new OTLPTraceExporter({
+  // url: 'http://155.138.202.64:4318/v1/traces',
+  url: 'http://localhost:4318/v1/traces',
+  headers: {}
 });
+// const exporter = new ZipkinExporter({
+//   url: 'http://155.138.202.64:9411/api/v2/spans',
+//   serviceName: 'vision-web',
+//   headers: {}// this header is important for Zipkin to work, as it changes the content type from application/json to xhr (https://github.com/open-telemetry/opentelemetry-js/issues/3062)
+// });
 const processor = new BatchSpanProcessor(exporter);
 provider.addSpanProcessor(processor);
 
-provider.register();
+// provider.register();
+provider.register({
+  propagator: new CompositePropagator({
+    propagators: [
+      new W3CBaggagePropagator(),
+      new W3CTraceContextPropagator(),
+    ],
+  }),
+  contextManager: new ZoneContextManager(),
+});
+
+// Register instrumentations
+registerInstrumentations({
+  instrumentations: [
+    new FetchInstrumentation(),
+    new XMLHttpRequestInstrumentation(),
+  ],
+});
 
 const root = createRoot(document.getElementById("root")!);
 

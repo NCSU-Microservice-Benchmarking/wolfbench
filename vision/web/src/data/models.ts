@@ -11,6 +11,7 @@ const models: IModels = {
       {
         name: 'YoloV8',
         path: '/model-yolov8/detections',
+        // path: 'http://localhost:8000/detections',
         img: 'https://assets-global.website-files.com/646dd1f1a3703e451ba81ecc/64994922cf2a6385a4bf4489_UltralyticsYOLO_mark_blue.svg',
       },
       {

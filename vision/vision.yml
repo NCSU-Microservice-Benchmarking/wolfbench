@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: vision-microservice-sam
-        image: lizhouyu/vision_microservice_sam
+        image: lizhouyu/vision_microservice_sam:1.0
         ports:
         - containerPort: 5000
         # resources:
@@ -43,7 +43,7 @@ spec:
     spec:
       containers:
       - name: vision-microservice-yolov8
-        image: lizhouyu/vision_microservice_yolov8
+        image: lizhouyu/vision_microservice_yolov8:1.0
         ports:
         - containerPort: 5000
         # resources:
@@ -71,7 +71,7 @@ spec:
     spec:
       containers:
       - name: vision-microservice-hog
-        image: lizhouyu/vision_microservice_hog
+        image: lizhouyu/vision_microservice_hog:1.0
         ports:
         - containerPort: 5000
 
