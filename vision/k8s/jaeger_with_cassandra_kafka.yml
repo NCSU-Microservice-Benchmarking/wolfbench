@@ -32,7 +32,7 @@ spec:
     options:
       cassandra:
         # Note: This assumes cassandra is running in the "default" namespace.
-        servers: cassandra.default.svc
+        servers: cassandra.observability.svc
         keyspace: jaeger_v1_dc1
     cassandraCreateSchema:
       datacenter: "dc1"
