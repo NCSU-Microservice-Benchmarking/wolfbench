@@ -77,9 +77,7 @@ spec:
               name: vision-microservice-config-hog
         ports:
         - containerPort: 5000
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -98,11 +96,12 @@ spec:
       containers:
       - name: vision-microservice-frontend
         image: lizhouyu/vision_microservice_frontend:v1.0 # the version with context-propagation instrumented code
+        envFrom:
+          - configMapRef:
+              name: vision-microservice-config-web
         ports:
         - containerPort: 80
-
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -115,9 +114,7 @@ spec:
     - protocol: TCP
       port: 5000
       targetPort: 5000
-
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -130,9 +127,7 @@ spec:
     - protocol: TCP
       port: 5000
       targetPort: 5000
-
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -145,9 +140,7 @@ spec:
     - protocol: TCP
       port: 5000
       targetPort: 5000
-
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -162,9 +155,7 @@ spec:
       port: 80
       targetPort: 80
       nodePort: 30000
-
 ---
-
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -204,6 +195,13 @@ spec:
                 name: vision-microservice-hog
                 port:
                   number: 5000
+          - path: /vision/trace/collector/otlp(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: jaeger-with-cassandra-and-kafka-collector
+                port:
+                  number: 4318
 ---
 # configmap for the flask-based microservices
 apiVersion: v1
@@ -227,6 +225,15 @@ data:
   OTEL_EXPORTER_ZIPKIN_ENDPOINT: http://jaeger-with-cassandra-and-kafka-collector.observability.svc.cluster.local:9411/api/v2/spans
   JAVA_TOOL_OPTIONS: "-javaagent:/app/opentelemetry-javaagent.jar -Dotel.exporter.otlp.protocol=http/protobuf"
   OTEL_SERVICE_NAME: "vision-hog"
+---
+# configmap for the reactjs-based frontend
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vision-microservice-config-web
+  namespace: vision
+data:
+  REACT_APP_BACKEND_URL: http://localhost/vision
 
   
 
