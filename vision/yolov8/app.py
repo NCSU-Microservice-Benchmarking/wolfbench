@@ -38,7 +38,8 @@ resource = Resource(
 # jaeger_endpoint = "http://jaeger-with-cassandra-and-kafka-collector.observability.svc.cluster.local:4317"
 # jaeger_endpoint = "http://eb2-2259-lin04.csc.ncsu.edu:30318"
 
-jaeger_endpoint = os.getenv("JAEGER_ENDPOINT", "http://localhost:4318")
+jaeger_endpoint = os.getenv("TRACE_COLLECTOR_ENDPOINT", "http://jaeger-with-cassandra-and-kafka-collector.observability.svc.cluster.local:4318")
+# jaeger_endpoint = os.getenv("JAEGER_ENDPOINT", "http://localhost:4318")
 # jaeger_endpoint = os.getenv("JAEGER_ENDPOINT", "http://155.138.202.64:4318")
 
 trace_provider = TracerProvider(resource=resource)

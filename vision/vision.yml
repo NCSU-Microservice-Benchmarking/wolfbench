@@ -16,6 +16,9 @@ spec:
       containers:
       - name: vision-microservice-sam
         image: lizhouyu/vision_microservice_sam:1.0
+        envFrom:
+          - configMapRef:
+              name: vision-microservice-config-flask
         ports:
         - containerPort: 5000
         # resources:
@@ -44,6 +47,9 @@ spec:
       containers:
       - name: vision-microservice-yolov8
         image: lizhouyu/vision_microservice_yolov8:1.0
+        envFrom:
+          - configMapRef:
+              name: vision-microservice-config-flask
         ports:
         - containerPort: 5000
         # resources:
@@ -72,6 +78,9 @@ spec:
       containers:
       - name: vision-microservice-hog
         image: lizhouyu/vision_microservice_hog:1.0
+        envFrom:
+          - configMapRef:
+              name: vision-microservice-config-hog
         ports:
         - containerPort: 5000
 
@@ -94,7 +103,7 @@ spec:
     spec:
       containers:
       - name: vision-microservice-frontend
-        image: lizhouyu/vision_microservice_frontend
+        image: lizhouyu/vision_microservice_frontend:v1.0 # the version with context-propagation instrumented code
         ports:
         - containerPort: 80
 
@@ -201,6 +210,32 @@ spec:
                 name: vision-microservice-hog
                 port:
                   number: 5000
+---
+# configmap for the flask-based microservices
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vision-microservice-config-flask
+  namespace: vision
+data:
+  TRACE_COLLECTOR_ENDPOINT: http://jaeger-with-cassandra-and-kafka-collector.observability.svc.cluster.local:4318
+---
+# configmap for the springboot-based HOG microservice
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vision-microservice-config-hog
+  namespace: vision
+data:
+  OTEL_TRACES_EXPORTEER: zipkin
+  OTEL_METRICS_EXPORTER: none
+  OTEL_LOGS_EXPORTER: none
+  OTEL_EXPORTER_ZIPKIN_ENDPOINT: http://jaeger-with-cassandra-and-kafka-collector.observability.svc.cluster.local:9411/api/v2/spans
+  JAVA_TOOL_OPTIONS: "-javaagent:/app/opentelemetry-javaagent.jar -Dotel.exporter.otlp.protocol=http/protobuf"
+  OTEL_SERVICE_NAME: "vision-hog"
+
+  
+
 
 
                   

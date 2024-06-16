@@ -34,7 +34,7 @@ resource = Resource(
     }
 )
 
-jaeger_endpoint = os.getenv("JAEGER_ENDPOINT", "http://localhost:4318")
+jaeger_endpoint = os.getenv("TRACE_COLLECTOR_ENDPOINT", "http://jaeger-with-cassandra-and-kafka-collector.observability.svc.cluster.local:4318")
 
 trace_provider = TracerProvider(resource=resource)
 processor = BatchSpanProcessor(OTLPSpanExporter(endpoint=jaeger_endpoint + "/v1/traces"))
