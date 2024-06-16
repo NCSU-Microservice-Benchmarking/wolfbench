@@ -32,13 +32,20 @@ const resource = Resource.default().merge(
   }),
 );
 
+// get the endpoint from the environment variables, whcih 
+// is BACKEND_URL + /trace/collector/otlp/v1/traces
+const EXPORTER_ENDPOINT = process.env.REACT_APP_BACKEND_URL + '/trace/collector/otlp/v1/traces';
+console.log('Exporter Endpoint:', EXPORTER_ENDPOINT);
+
+// const EXPORTER_ENDPOINT = 'http://localhost:4318/v1/traces';
 const provider = new WebTracerProvider({
   resource: resource,
 });
 // const exporter = new ConsoleSpanExporter();
 const exporter = new OTLPTraceExporter({
   // url: 'http://155.138.202.64:4318/v1/traces',
-  url: 'http://localhost:4318/v1/traces',
+  // url: 'http://localhost:4318/v1/traces',
+  url: EXPORTER_ENDPOINT,
   headers: {}
 });
 // const exporter = new ZipkinExporter({
