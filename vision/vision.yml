@@ -95,7 +95,7 @@ spec:
     spec:
       containers:
       - name: vision-microservice-frontend
-        image: lizhouyu/vision_microservice_frontend:v1.0 # the version with context-propagation instrumented code
+        image: lizhouyu/vision_microservice_frontend:v1.1 # the version with context-propagation instrumented code
         envFrom:
           - configMapRef:
               name: vision-microservice-config-web
