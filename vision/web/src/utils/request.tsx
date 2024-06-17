@@ -13,8 +13,7 @@ const tracer = opentelemetry.trace.getTracer(
   '0.1.0',
 );
 
-const backend_url = process.env.REACT_APP_BACKEND_URL;
-// const backend_url = 'http://localhost/vision';
+// const backend_url = process.env.REACT_APP_BACKEND_URL;
 
 const requestUtil = {
 
@@ -52,7 +51,7 @@ const requestUtil = {
         // let path: string = models[task].models.find((model_) => model_.name === model)?.path!;
         // path is the URL of the backend get from the environment variable and the endpoint get from models.ts
         
-        let path: string = backend_url + models[task].models.find((model_) => model_.name === model)?.path!;
+        let path: string = 'http://wolfbench02/' +  models[task].models.find((model_) => model_.name === model)?.path!;
 
         console.log('Path:', path);
         

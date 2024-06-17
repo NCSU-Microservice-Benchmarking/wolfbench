@@ -1,0 +1,40 @@
+apiVersion: jaegertracing.io/v1
+kind: Jaeger
+metadata:
+  name: jaeger-cassandra
+  namespace: observability
+spec:
+  strategy: production
+  collector:
+    maxReplicas: 5
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+  storage:
+    type: cassandra
+    options:
+      cassandra:
+        servers: cassandra
+        keyspace: jaeger_v1_dc1
+    cassandraCreateSchema: # <3>
+      datacenter: "dc1"
+      mode: "prod"
+  # defaultNodeSelector: name=lin04
+  # affinity:
+  #   nodeAffinity:
+  #     requiredDuringSchedulingIgnoredDuringExecution:
+  #       nodeSelectorTerms:
+  #       - matchExpressions:
+  #         - key: name
+  #           operator: In
+  #           values:
+  #           - lin04
+  #     preferredDuringSchedulingIgnoredDuringExecution:
+  #     - weight: 1
+  #       preference:
+  #         matchExpressions:
+  #         - key: name
+  #           operator: In
+  #           values:
+  #           - lin04

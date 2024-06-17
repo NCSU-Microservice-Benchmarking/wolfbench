@@ -26,6 +26,8 @@ data:
     collector:
       zipkin:
         http-port: 9411
+      otlp:
+        http-port: 4318
     cassandra:
       servers: cassandra
       keyspace: jaeger_v1_dc1

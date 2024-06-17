@@ -10,13 +10,12 @@ const models: IModels = {
     models: [
       {
         name: 'YoloV8',
-        path: '/model-yolov8/detections',
-        // path: 'http://localhost:8000/detections',
+        path: 'model-yolov8/detections/',
         img: 'https://assets-global.website-files.com/646dd1f1a3703e451ba81ecc/64994922cf2a6385a4bf4489_UltralyticsYOLO_mark_blue.svg',
       },
       {
         name: 'HOG',
-        path: '/model-hog-people/',
+        path: 'model-hog/',
         img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWnOEy2mRFa10S8VdzcnoRV5bPXeC2we_QALmi7dpk0A&s',
       }
     ]
@@ -30,7 +29,7 @@ const models: IModels = {
     models: [
       {
         name: 'Segment Anything',
-        path: '/model-sam/',
+        path: 'model-sam/',
         img: 'https://1000logos.net/wp-content/uploads/2021/10/logo-Meta.png'
       },
     ]

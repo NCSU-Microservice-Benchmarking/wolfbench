@@ -14,6 +14,8 @@ spec:
         memory: 512Mi
     options:
       collector.queue-size: 10000
+      collector.otlp.http.cors.allowed-headers: '*'
+      collector.otlp.http.cors.allowed-origins: '*'
       kafka: 
         producer:
           topic: jaeger-spans
