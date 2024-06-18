@@ -26,7 +26,7 @@ from opentelemetry.baggage.propagation import W3CBaggagePropagator
 
 app = Flask(__name__)
 cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
+app.config['CORS_HEADERS'] = 'Content-Type, Traceparent, Tracestate, Baggage'
 
 # setup opentelemetry
 resource = Resource(

@@ -51,7 +51,7 @@ const requestUtil = {
         // let path: string = models[task].models.find((model_) => model_.name === model)?.path!;
         // path is the URL of the backend get from the environment variable and the endpoint get from models.ts
         
-        let path: string = 'http://wolfbench02/' +  models[task].models.find((model_) => model_.name === model)?.path!;
+        let path: string = 'http://vision.wolfbench.com/' +  models[task].models.find((model_) => model_.name === model)?.path!;
 
         console.log('Path:', path);
         

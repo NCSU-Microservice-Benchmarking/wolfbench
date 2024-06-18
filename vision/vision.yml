@@ -75,7 +75,7 @@ spec:
     spec:
       containers:
       - name: vision-microservice-yolov8
-        image: lizhouyu/vision_microservice_yolov8:v1.0
+        image: lizhouyu/vision_microservice_yolov8:v1.1
         envFrom:
           - configMapRef:
               name: vision-microservice-config-flask
@@ -127,7 +127,7 @@ spec:
     spec:
       containers:
       - name: vision-microservice-frontend
-        image: lizhouyu/vision_microservice_frontend:v0.1 # the version still have endpoint hard-coded
+        image: lizhouyu/vision_microservice_frontend:v0.6 # the version still have endpoint hard-coded
         envFrom:
           - configMapRef:
               name: vision-microservice-config-web
@@ -200,28 +200,37 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-send-timeout: "360s"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "360s"
     nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "*"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, POST, GET, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "http://www.wolfbench.com:30000"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
     nginx.ingress.kubernetes.io/default-backend: vision-microservice-frontend
 spec:
   ingressClassName: nginx
+  defaultBackend:
+    service:
+      name: vision-microservice-frontend
+      port:
+        number: 80
   rules:
-    - host: wolfbench02 # replace with your own domain
+    - host: vision.wolfbench.com # replace with your own domain
       http:
         paths:
-          - path: /vision/model-sam(/|$)(.*)
+          - path: /model-sam(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
                 name: vision-microservice-sam
                 port:
                   number: 5000
-          - path: /vision/model-yolov8(/|$)(.*)
+          - path: /model-yolov8(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
                 name: vision-microservice-yolov8
                 port:
                   number: 5000
-          - path: /vision/model-hog-people(/|$)(.*)
+          - path: /model-hog-people(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
@@ -229,11 +238,30 @@ spec:
                 port:
                   number: 5000
 ---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vision-microservice-website-ingress
+  namespace: vision
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: vision.wolfbench.com
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: vision-microservice-frontend
+                port:
+                  number: 80
+---
 # ingress for the trace collector
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: vision-microservice-trace-collector-ingress
+  name: wolfbench-trace-collector-ingress-otlp
   namespace: observability
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
@@ -245,13 +273,32 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: wolfbench02 # replace with your own domain 
+    - host: www.wolfbench.com # replace with your own domain 
       http:
         paths:
-          - path: /vision/trace/collector/otlp(/|$)(.*)
+          - path: /trace/collector/otlp(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
                 name: jaeger-with-cassandra-and-kafka-collector
                 port:
                   number: 4318
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wolfbench-jaeger-query-ingress
+  namespace: observability
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: jaeger.wolfbench.com
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: jaeger-with-cassandra-and-kafka-query
+                port:
+                  number: 16686

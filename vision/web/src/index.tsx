@@ -37,7 +37,7 @@ const resource = Resource.default().merge(
 // const EXPORTER_ENDPOINT = process.env.REACT_APP_BACKEND_URL + '/trace/collector/otlp/v1/traces';
 // const EXPORTER_ENDPOINT = "http://localhost/vision/trace/collector/otlp/v1/traces"; // TODO: find a way to get this from the environment variables (same in the utils/request.tsx file) 
 // const EXPORTER_ENDPOINT = "http://localhost/vision/trace/collector/otlp/v1/traces";
-const EXPORTER_ENDPOINT = "http://wolfbench02/vision/trace/collector/otlp/v1/traces";
+const EXPORTER_ENDPOINT = "http://www.wolfbench.com/trace/collector/otlp/v1/traces";
 console.log('Exporter Endpoint:', EXPORTER_ENDPOINT);
 
 // const EXPORTER_ENDPOINT = 'http://localhost:4318/v1/traces';
