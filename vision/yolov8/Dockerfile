@@ -1,9 +1,9 @@
-FROM nvidia/cuda:12.3.2-runtime-ubuntu22.04
+FROM python:3.9-slim-buster
 
 LABEL maintainer="Zhouyu Li"
 LABEL email="zli85@ncsu.edu"
 LABEL version="0.1"
-LABEL platform="x86_64"
+LABEL platform="arm"
 LABEL device="cpu"
 
 USER root
@@ -11,8 +11,8 @@ USER root
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
-    && apt install -y ffmpeg libsm6 libxext6 \
-    && apt install -y python3 python3-pip
+    && apt-get install -y ffmpeg libsm6 libxext6 \
+    && apt-get install -y python3 python3-pip
 
 COPY . /usr/src/pyserver
 
