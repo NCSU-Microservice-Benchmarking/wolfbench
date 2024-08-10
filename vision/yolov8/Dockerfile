@@ -10,6 +10,8 @@ USER root
 
 ARG DEBIAN_FRONTEND=noninteractive
 
+RUN apt-get install -y python3 python3-pip
+
 COPY . /usr/src/pyserver
 
 WORKDIR /usr/src/pyserver
