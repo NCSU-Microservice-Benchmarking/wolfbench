@@ -2,7 +2,6 @@ from flask import Flask, request, Response
 import cv2
 import numpy as np
 import os
-from ultralytics import YOLO
 from flask_cors import CORS, cross_origin
 import onnxruntime as ort
 
