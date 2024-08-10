@@ -1,4 +1,4 @@
-FROM arm32v7/python:3.7-slim-buster
+FROM arm32v7/python:3.9-slim-buster
 
 LABEL maintainer="Zhouyu Li"
 LABEL email="zli85@ncsu.edu"
@@ -10,7 +10,8 @@ USER root
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get install -y python3 python3-pip
+RUN apt-get update \
+    && apt-get install -y ffmpeg libsm6 libxext6
 
 COPY . /usr/src/pyserver
 
