@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vision-microservice-yolov8
+  namespace: vision
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vision-microservice-yolov8
+  template:
+    metadata:
+      labels:
+        app: vision-microservice-yolov8
+    spec:
+      containers:
+      - name: vision-microservice-yolov8
+        image: lizhouyu/vision_microservice_yolov8:v1.1
+        envFrom:
+          - configMapRef:
+              name: vision-microservice-config-flask
+        ports:
+        - containerPort: 5000
+        # resources:
+        #   limits:
+        #     nvidia.com/gpu: 1
