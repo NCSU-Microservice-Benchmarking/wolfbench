@@ -1,3 +1,19 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: my-namespace
+---
+
+# configmap for the flask-based microservices
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vision-microservice-config-flask
+  namespace: vision
+data:
+  TRACE_COLLECTOR_ENDPOINT: http://jaeger-with-cassandra-and-kafka-collector.observability.svc.cluster.local:4318
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,3 +42,17 @@ spec:
         # resources:
         #   limits:
         #     nvidia.com/gpu: 1
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: vision-microservice-yolov8
+  namespace: vision
+spec:
+  selector:
+    app: vision-microservice-yolov8
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
