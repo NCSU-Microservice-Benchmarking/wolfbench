@@ -53,6 +53,6 @@ spec:
   selector:
     app: vision-microservice-yolov8
   ports:
-    - port: 80           # 服务内部的端口
+    - port: 5000           # 服务内部的端口
       targetPort: 5000    # 容器的端口
       nodePort: 30007     # NodePort，范围在 30000-32767 之间
