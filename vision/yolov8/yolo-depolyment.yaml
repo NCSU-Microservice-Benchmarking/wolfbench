@@ -15,12 +15,14 @@ spec:
     spec:
       containers:
       - name: vision-microservice-yolov8
-        image: lizhouyu/vision_microservice_yolov8:v1.1
+        image: internationale/yolov8-onnx:latest
         envFrom:
           - configMapRef:
               name: vision-microservice-config-flask
         ports:
         - containerPort: 5000
+      imagePullSecrets:
+        - name: myregistrykey
         # resources:
         #   limits:
         #     nvidia.com/gpu: 1
